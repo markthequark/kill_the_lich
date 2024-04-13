@@ -1,13 +1,37 @@
 run:
 	iex -S mix phx.server
 
-deps:
-	mix deps.get
-
 # first time setup
 setup: deps
 	mix ecto.create
 	mix ecsx.setup
+	mix compile
+	mix run priv/repo/seeds.exs
 
-.PHONY: run deps setup
+seed:
+	mix run priv/repo/seeds.exs
 
+deps:
+	mix deps.get
+
+test:
+	mix test
+
+pry_test:
+	iex -S mix test --trace
+
+format:
+	mix format
+
+static_analysis: credo dialyzer
+
+credo:
+	mix credo --strict
+
+dialyzer:
+	mix dialyzer
+
+clean:
+	mix clean
+
+.PHONY: run setup seed deps test pry_test format static_analysis credo dialyzer clean

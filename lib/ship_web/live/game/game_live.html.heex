@@ -12,9 +12,7 @@
       </text>
     <% else %>
       <%!-- HUD --%>
-      <text x={@x_offset} y={@y_offset + 1} style="font: 1px serif">
-        Hull Points: <%= @current_hp %>
-      </text>
+      <.hud {assigns} />
 
       <%!-- Player Ship --%>
       <image

@@ -173,4 +173,11 @@ defmodule ShipWeb.GameLive do
   defp keyup(key) when key in ~w(s S ArrowDown), do: {:stop_move, :south}
   defp keyup(key) when key in ~w(d D ArrowRight), do: {:stop_move, :east}
   defp keyup(_key), do: :noop
+
+  embed_templates "components/*"
+
+  attr :x_offset, :integer, required: true
+  attr :y_offset, :integer, required: true
+  attr :current_hp, :integer, required: true
+  def hud(assigns)
 end

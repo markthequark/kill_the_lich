@@ -8,13 +8,11 @@ defmodule Ship.Systems.Attacking do
   alias Ship.Components.YPosition
   alias Ship.Components.XVelocity
   alias Ship.Components.YVelocity
-  alias Ship.Components.ArmorRating
   alias Ship.Components.AttackCooldown
   alias Ship.Components.AttackDamage
   alias Ship.Components.AttackRange
   alias Ship.Components.AttackSpeed
   alias Ship.Components.AttackTarget
-  alias Ship.Components.HullPoints
   alias Ship.Components.SeekingTarget
   alias Ship.Components.IsProjectile
   alias Ship.Components.ProjectileDamage

@@ -36,7 +36,7 @@ defmodule Ship.Systems.ClientEventHandler do
     YPosition.add(player, Enum.random(1..100))
     XVelocity.add(player, 0)
     YVelocity.add(player, 0)
-    ImageFile.add(player, "player_ship.svg")
+    ImageFile.add(player, "my_spaceship.svg")
     PlayerSpawned.add(player)
   end
 

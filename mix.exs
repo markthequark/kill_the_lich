@@ -32,6 +32,7 @@ defmodule Ship.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
       {:ecsx, "~> 0.5"},
 
       # default deps

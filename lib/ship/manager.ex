@@ -23,6 +23,7 @@ defmodule Ship.Manager do
       Ship.Components.XVelocity.add(entity, 0)
       Ship.Components.YVelocity.add(entity, 0)
     end
+
     :ok
   end
 
@@ -54,6 +55,7 @@ defmodule Ship.Manager do
   # Declare all Systems to run
   def systems do
     [
+      Ship.Systems.ClientEventHandler,
       Ship.Systems.Destruction,
       Ship.Systems.CooldownExpiration,
       Ship.Systems.Attacking,

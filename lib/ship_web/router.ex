@@ -66,6 +66,7 @@ defmodule ShipWeb.Router do
 
     live_session :require_authenticated_player,
       on_mount: [{ShipWeb.PlayerAuth, :ensure_authenticated}] do
+      live "/game", GameLive
       live "/players/settings", PlayerSettingsLive, :edit
       live "/players/settings/confirm_email/:token", PlayerSettingsLive, :confirm_email
     end

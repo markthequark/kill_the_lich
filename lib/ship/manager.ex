@@ -34,7 +34,7 @@ defmodule Ship.Manager do
   # Declare all Systems to run
   def systems do
     [
-      # MyApp.Systems.SampleSystem
+      Ship.Systems.Driver
     ]
   end
 end

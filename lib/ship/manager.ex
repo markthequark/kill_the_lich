@@ -36,6 +36,7 @@ defmodule Ship.Manager do
   # Declare all valid Component types
   def components do
     [
+      Ship.Components.PlayerSpawned,
       Ship.Components.DestroyedAt,
       Ship.Components.AttackCooldown,
       Ship.Components.AttackTarget,

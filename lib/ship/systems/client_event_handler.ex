@@ -14,6 +14,7 @@ defmodule Ship.Systems.ClientEventHandler do
   alias Ship.Components.XVelocity
   alias Ship.Components.YPosition
   alias Ship.Components.YVelocity
+  alias Ship.Components.PlayerSpawned
 
   @impl ECSx.System
   def run do
@@ -23,8 +24,8 @@ defmodule Ship.Systems.ClientEventHandler do
   end
 
   defp process_one({player, :spawn_ship}) do
-    # We'll give player ships better stats than the enemy ships
-    # (otherwise the game would be very short!)
+    # player ships have better stats than the enemy ships
+    PlayerSpawned.add(player)
     ArmorRating.add(player, 2)
     AttackDamage.add(player, 6)
     AttackRange.add(player, 15)

@@ -15,6 +15,7 @@ defmodule Ship.Systems.ClientEventHandler do
   alias Ship.Components.YPosition
   alias Ship.Components.YVelocity
   alias Ship.Components.PlayerSpawned
+  alias Ship.Components.ImageFile
 
   @impl ECSx.System
   def run do
@@ -25,7 +26,6 @@ defmodule Ship.Systems.ClientEventHandler do
 
   defp process_one({player, :spawn_ship}) do
     # player ships have better stats than the enemy ships
-    PlayerSpawned.add(player)
     ArmorRating.add(player, 2)
     AttackDamage.add(player, 6)
     AttackRange.add(player, 15)
@@ -36,6 +36,8 @@ defmodule Ship.Systems.ClientEventHandler do
     YPosition.add(player, Enum.random(1..100))
     XVelocity.add(player, 0)
     YVelocity.add(player, 0)
+    ImageFile.add(player, "player_ship.svg")
+    PlayerSpawned.add(player)
   end
 
   # Note Y movement will use screen position (increasing Y goes south)

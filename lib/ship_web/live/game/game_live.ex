@@ -7,7 +7,7 @@ defmodule ShipWeb.GameLive do
   alias Ship.Components.PlayerSpawned
   alias Ship.Components.ImageFile
   alias Ship.Components.IsProjectile
-  alias Ship.Components.{RenderWidth, RenderHeight}
+  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon}
 
   embed_templates "components/*"
 
@@ -18,7 +18,7 @@ defmodule ShipWeb.GameLive do
     socket =
       socket
       |> assign(player_entity: player.id)
-        # Keeping a set of currently held keys will allow us to prevent duplicate keydown events
+      # Keeping a set of currently held keys will allow us to prevent duplicate keydown events
       |> assign(keys: MapSet.new())
       |> assign(game_world_size: 100, screen_height: 20, screen_width: 40)
       |> assign_initial_state()
@@ -39,13 +39,15 @@ defmodule ShipWeb.GameLive do
       y_coord: nil,
       current_hp: nil,
       player_ship_image_file: nil,
+      weapon: nil,
       other_ships: [],
       projectiles: [],
       x_offset: 0,
       y_offset: 0,
       width: 0,
       height: 0,
-      loading: true
+      loading: true,
+      dead: false
     )
   end
 
@@ -76,6 +78,11 @@ defmodule ShipWeb.GameLive do
     {:noreply, socket}
   end
 
+  def handle_event(_, _, socket) when socket.assigns.dead == true do
+    IO.puts("Preventing event because player is dead")
+    {:noreply, socket}
+  end
+
   def handle_event("keydown", %{"key" => key}, socket) do
     if MapSet.member?(socket.assigns.keys, key) do
       # Already holding this key - do nothing
@@ -94,6 +101,11 @@ defmodule ShipWeb.GameLive do
     {:noreply, assign(socket, keys: MapSet.delete(socket.assigns.keys, key))}
   end
 
+  def handle_event("clicked", %{"myval" => weapon}, socket) when weapon in ~w(hammer magic bow) do
+    ECSx.ClientEvents.add(socket.assigns.player_entity, {:equip_weapon, weapon})
+    {:noreply, socket}
+  end
+
   def handle_event("clicked", %{"myval" => entity}, socket) do
     IO.puts("clicked the entity: #{inspect(entity)}")
     {:noreply, socket}
@@ -106,8 +118,19 @@ defmodule ShipWeb.GameLive do
     image = ImageFile.get(socket.assigns.player_entity)
     width = RenderWidth.get(socket.assigns.player_entity)
     height = RenderHeight.get(socket.assigns.player_entity)
+    weapon = PlayerWeapon.get(socket.assigns.player_entity)
 
-    assign(socket, x_coord: x, y_coord: y, width: width, height: height, current_hp: hp, player_ship_image_file: image)
+    assign(socket,
+      x_coord: x,
+      y_coord: y,
+      width: width,
+      height: height,
+      current_hp: hp,
+      player_ship_image_file: image,
+      weapon: weapon
+    )
+  rescue
+    ECSx.NoResultsError -> assign(socket, dead: true)
   end
 
   defp assign_other_ships(socket) do

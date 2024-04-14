@@ -16,7 +16,7 @@ defmodule Ship.Systems.ClientEventHandler do
   alias Ship.Components.YVelocity
   alias Ship.Components.PlayerSpawned
   alias Ship.Components.ImageFile
-  alias Ship.Components.{RenderWidth, RenderHeight}
+  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon}
 
   @impl ECSx.System
   def run do
@@ -31,7 +31,7 @@ defmodule Ship.Systems.ClientEventHandler do
     AttackDamage.add(player, 6)
     AttackRange.add(player, 15)
     AttackSpeed.add(player, 1.2)
-    HealthPoints.add(player, 75)
+    HealthPoints.add(player, 40)
     SeekingTarget.add(player)
     XPosition.add(player, Enum.random(1..100))
     YPosition.add(player, Enum.random(1..100))
@@ -40,8 +40,11 @@ defmodule Ship.Systems.ClientEventHandler do
     RenderWidth.add(player, 1)
     RenderHeight.add(player, 2)
     ImageFile.add(player, "my_spaceship.svg")
+    PlayerWeapon.add(player, "bow")
     PlayerSpawned.add(player)
   end
+
+  defp process_one({player, {:equip_weapon, weapon}}), do: PlayerWeapon.update(player, weapon)
 
   # Note Y movement will use screen position (increasing Y goes south)
   defp process_one({player, {:move, :north}}), do: YVelocity.update(player, -1)

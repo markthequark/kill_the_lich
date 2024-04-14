@@ -39,12 +39,20 @@ defmodule Ship.Manager do
       Ship.Components.RenderHeight.add(entity, 5)
     end
 
+    spawn_lich()
     :ok
+  end
+
+  defp spawn_lich do
+    entity = Ecto.UUID.generate()
   end
 
   # Declare all valid Component types
   def components do
     [
+      Ship.Components.IsLich,
+      Ship.Components.IsPlayer,
+      Ship.Components.PlayerWeapon,
       Ship.Components.RenderHeight,
       Ship.Components.RenderWidth,
       Ship.Components.IsProjectile,

@@ -1,51 +1,44 @@
 <div id="game" style="display: flex" phx-window-keydown="keydown" phx-window-keyup="keyup">
-<div id="left_element" style="flex: 0 0 75%">
-  <svg
-    viewBox={"#{@x_offset} #{@y_offset} #{@screen_width} #{@screen_height}"}
-    preserveAspectRatio="xMinYMin slice"
-  >
-    <%!-- Background --%>
-    <.sandy_bg {assigns} />
+  <div id="left_element" style="flex: 0 0 75%">
+    <svg
+      viewBox={"#{@x_offset} #{@y_offset} #{@screen_width} #{@screen_height}"}
+      preserveAspectRatio="xMinYMin slice"
+    >
+      <%!-- Background --%>
+      <.sandy_bg {assigns} />
 
-    <%= if @loading do %>
-      <text x={div(@screen_width, 2)} y={div(@screen_height, 2)} style="font: 1px serif">
-        Loading...
-      </text>
-    <% else %>
-      <%!-- Player Ship --%>
-      <image
-        x={@x_coord}
-        y={@y_coord}
-        width={@width}
-        height={@height}
-        href={~p"/images/#{@player_ship_image_file}"}
-      />
+      <%= if @dead do %>
+        <text x={@x_coord} y={@y_coord} style="font: 1px serif">
+          Oh dear, you are dead!
+        </text>
+      <% else %>
+        <%= if @loading do %>
+          <text x={div(@screen_width, 2)} y={div(@screen_height, 2)} style="font: 1px serif">
+            Loading...
+          </text>
+        <% else %>
+          <%!-- Player Ship --%>
+          <image
+            x={@x_coord}
+            y={@y_coord}
+            width={@width}
+            height={@height}
+            href={~p"/images/#{@player_ship_image_file}"}
+          />
 
-      <%!-- Enemy Ships --%>
-      <%= for {entity, x, y, width, height, image_file} <- @other_ships do %>
-        <image
-          phx-click="clicked" phx-value-myval={entity}
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          href={~p"/images/#{image_file}"}
-        />
+          <%!-- Enemy Ships --%>
+          <%= for {entity, x, y, width, height, image_file} <- @other_ships do %>
+            <image x={x} y={y} width={width} height={height} href={~p"/images/#{image_file}"} />
+          <% end %>
+
+          <%!-- Projectiles --%>
+          <%= for {_entity, x, y, image_file} <- @projectiles do %>
+            <image x={x} y={y} width="1" height="1" href={~p"/images/#{image_file}"} />
+          <% end %>
+        <% end %>
       <% end %>
+    </svg>
+  </div>
 
-      <%!-- Projectiles --%>
-      <%= for {_entity, x, y, image_file} <- @projectiles do %>
-        <image
-          x={x}
-          y={y}
-          width="1"
-          height="1"
-          href={~p"/images/#{image_file}"}
-        />
-      <% end %>
-    <% end %>
-  </svg>
-</div>
-
-<.right_sidebar {assigns} />
+  <.right_sidebar {assigns} />
 </div>

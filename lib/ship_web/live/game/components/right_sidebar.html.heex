@@ -1,44 +1,45 @@
 <style>
-.right-div {
-  flex: 0 0 25%;
-  display: flex;
-  background-color: #ddd;
-  flex-direction: column;
-}
+  .right-div {
+    height: 300px;
+    flex: 0 0 25%;
+    display: flex;
+    background-color: #ddd;
+    flex-direction: column;
+  }
 
-.right-inner-div {
-  flex: 1; /* Each inner div takes up full vertical space */
-  background-color: #ddd;
-  display: flex; /* Display the 2x2 grid */
-  flex-wrap: wrap; /* Allow the grid to wrap */
-}
+  .right-inner-div {
+    flex: 0 0 33%; /* Each inner div takes up full vertical space */
+    background-color: #ddd;
+    display: flex; /* Display the 2x2 grid */
+    flex-wrap: wrap; /* Allow the grid to wrap */
+  }
 
-.grid-item {
-  flex-basis: 50%; /* Each grid item takes up 50% width */
-  flex-grow: 0; /* Prevent items from growing */
-  flex-shrink: 0; /* Prevent items from shrinking */
-  background-color: #eee; /* for visualization */
-  border: 1px solid #999; /* for visualization */
-}
+  .grid-item {
+    flex-basis: 50%; /* Each grid item takes up 50% width */
+    flex-grow: 0; /* Prevent items from growing */
+    flex-shrink: 0; /* Prevent items from shrinking */
+    border: 1px solid #999; /* for visualization */
+  }
 </style>
 
 <div class="right-div">
-  <div id="player_art" class="right-inner-div">
-    player art
-  </div>
-
   <div id="player_stats" class="right-inner-div">
-    Health Points: <%= @current_hp %> <br/>
-    X: <%= @x_coord %> <br/>
-    Y: <%= @y_coord %>
+    Health Points: <%= @current_hp %> <br /> Position: {<%= @x_coord %>, <%= @y_coord %>} <br />
+    Weapon: <%= @weapon %> <br /> Dead: <%= @dead %>
   </div>
 
   <div id="weapons" class="right-inner-div">
-
-    <div class="grid-item"></div>
-    <div class="grid-item"></div>
-    <div class="grid-item"></div>
-    <div class="grid-item"></div>
-
+    <div class="grid-item" phx-click="clicked" phx-value-myval="hammer" }>
+      <image style="amax-width: 100%;" src={~p"/images/hammer_icon.png"} />
+    </div>
+    <div class="grid-item" phx-click="clicked" phx-value-myval="magic">
+      <image style="amax-height: 100%;" src={~p"/images/light_magic_icon.png"} />
+    </div>
+    <div class="grid-item" phx-click="clicked" phx-value-myval="bow">
+      <image style="amax-height: 100%;" src={~p"/images/bow_icon.png"} />
+    </div>
+    <div class="grid-item" phx-click="clicked" phx-value-myval="health">
+      <image style="amax-height: 100%;" src={~p"/images/health_potion_icon.png"} />
+    </div>
   </div>
 </div>

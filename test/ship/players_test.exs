@@ -200,7 +200,11 @@ defmodule Ship.PlayersTest do
 
       token =
         extract_player_token(fn url ->
-          Players.deliver_player_update_email_instructions(%{player | email: email}, player.email, url)
+          Players.deliver_player_update_email_instructions(
+            %{player | email: email},
+            player.email,
+            url
+          )
         end)
 
       %{player: player, token: token, email: email}
@@ -223,7 +227,9 @@ defmodule Ship.PlayersTest do
     end
 
     test "does not update email if player email changed", %{player: player, token: token} do
-      assert Players.update_player_email(%{player | email: "current@example.com"}, token) == :error
+      assert Players.update_player_email(%{player | email: "current@example.com"}, token) ==
+               :error
+
       assert Repo.get!(Player, player.id).email == player.email
       assert Repo.get_by(PlayerToken, player_id: player.id)
     end
@@ -488,7 +494,9 @@ defmodule Ship.PlayersTest do
     end
 
     test "updates the password", %{player: player} do
-      {:ok, updated_player} = Players.reset_player_password(player, %{password: "new valid password"})
+      {:ok, updated_player} =
+        Players.reset_player_password(player, %{password: "new valid password"})
+
       assert is_nil(updated_player.password)
       assert Players.get_player_by_email_and_password(player.email, "new valid password")
     end

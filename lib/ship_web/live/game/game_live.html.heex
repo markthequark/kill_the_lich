@@ -18,18 +18,18 @@
       <image
         x={@x_coord}
         y={@y_coord}
-        width="1"
-        height="2"
+        width={@width}
+        height={@height}
         href={~p"/images/#{@player_ship_image_file}"}
       />
 
       <%!-- Enemy Ships --%>
-      <%= for {_entity, x, y, image_file} <- @other_ships do %>
+      <%= for {_entity, x, y, width, height, image_file} <- @other_ships do %>
         <image
           x={x}
           y={y}
-          width="4"
-          height="5"
+          width={width}
+          height={height}
           href={~p"/images/#{image_file}"}
         />
       <% end %>

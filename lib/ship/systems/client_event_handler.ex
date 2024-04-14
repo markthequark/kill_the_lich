@@ -16,6 +16,7 @@ defmodule Ship.Systems.ClientEventHandler do
   alias Ship.Components.YVelocity
   alias Ship.Components.PlayerSpawned
   alias Ship.Components.ImageFile
+  alias Ship.Components.{RenderWidth, RenderHeight}
 
   @impl ECSx.System
   def run do
@@ -36,6 +37,8 @@ defmodule Ship.Systems.ClientEventHandler do
     YPosition.add(player, Enum.random(1..100))
     XVelocity.add(player, 0)
     YVelocity.add(player, 0)
+    RenderWidth.add(player, 1)
+    RenderHeight.add(player, 2)
     ImageFile.add(player, "my_spaceship.svg")
     PlayerSpawned.add(player)
   end

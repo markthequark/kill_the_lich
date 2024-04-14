@@ -24,6 +24,7 @@ defmodule Ship.Manager do
       else
         Ship.Components.ImageFile.add(entity, "zombie_colour.png")
       end
+
       Ship.Components.ArmorRating.add(entity, 0)
       Ship.Components.AttackDamage.add(entity, 5)
       Ship.Components.AttackRange.add(entity, 10)
@@ -34,6 +35,8 @@ defmodule Ship.Manager do
       Ship.Components.YPosition.add(entity, Enum.random(1..100))
       Ship.Components.XVelocity.add(entity, 0)
       Ship.Components.YVelocity.add(entity, 0)
+      Ship.Components.RenderWidth.add(entity, 4)
+      Ship.Components.RenderHeight.add(entity, 5)
     end
 
     :ok
@@ -42,6 +45,8 @@ defmodule Ship.Manager do
   # Declare all valid Component types
   def components do
     [
+      Ship.Components.RenderHeight,
+      Ship.Components.RenderWidth,
       Ship.Components.IsProjectile,
       Ship.Components.ProjectileDamage,
       Ship.Components.ProjectileTarget,

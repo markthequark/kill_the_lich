@@ -18,6 +18,7 @@ defmodule Ship.Systems.Destruction do
   alias Ship.Components.YPosition
   alias Ship.Components.YVelocity
   alias Ship.Components.ProjectileTarget
+  alias Ship.Components.{RenderWidth, RenderHeight}
 
   @impl ECSx.System
   def run do
@@ -41,6 +42,8 @@ defmodule Ship.Systems.Destruction do
     XVelocity.remove(ship)
     YPosition.remove(ship)
     YVelocity.remove(ship)
+    RenderWidth.remove(ship)
+    RenderHeight.remove(ship)
 
     # when a ship is destroyed, other ships should stop targeting it
     untarget(ship)

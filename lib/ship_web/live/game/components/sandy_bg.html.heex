@@ -1,0 +1,9 @@
+<%= for row <- 0..9, col <- 0..9 do %>
+  <image
+    x={"#{row*10}"}
+    y={"#{col*10}"}
+    width="10"
+    height="10"
+    href={~p"/images/sandy_background.svg"}
+  />
+<% end %>

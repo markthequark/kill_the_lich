@@ -19,7 +19,11 @@ defmodule Ship.Manager do
       entity = Ecto.UUID.generate()
 
       # Then use that ID to create the components which make up a ship
-      Ship.Components.ImageFile.add(entity, "npc_ship.svg")
+      if Enum.random(1..2) == 1 do
+        Ship.Components.ImageFile.add(entity, "skele_colour.png")
+      else
+        Ship.Components.ImageFile.add(entity, "zombie_colour.png")
+      end
       Ship.Components.ArmorRating.add(entity, 0)
       Ship.Components.AttackDamage.add(entity, 5)
       Ship.Components.AttackRange.add(entity, 10)

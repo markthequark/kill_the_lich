@@ -4,7 +4,7 @@
     preserveAspectRatio="xMinYMin slice"
   >
     <%!-- Background --%>
-    <rect width={@game_world_size} height={@game_world_size} fill="#72eff8" />
+    <.sandy_bg {assigns} />
 
     <%= if @loading do %>
       <text x={div(@screen_width, 2)} y={div(@screen_height, 2)} style="font: 1px serif">
@@ -28,8 +28,8 @@
         <image
           x={x}
           y={y}
-          width="1"
-          height="1"
+          width="4"
+          height="5"
           href={~p"/images/#{image_file}"}
         />
       <% end %>

@@ -7,7 +7,7 @@ defmodule ShipWeb.GameLive do
   alias Ship.Components.PlayerSpawned
   alias Ship.Components.ImageFile
   alias Ship.Components.IsProjectile
-  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon}
+  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon, PlayerName}
 
   embed_templates "components/*"
 
@@ -18,6 +18,7 @@ defmodule ShipWeb.GameLive do
     socket =
       socket
       |> assign(player_entity: player.id)
+      |> assign(player_name: player.email)
       # Keeping a set of currently held keys will allow us to prevent duplicate keydown events
       |> assign(keys: MapSet.new())
       |> assign(game_world_size: 100, screen_height: 20, screen_width: 40)
@@ -26,7 +27,7 @@ defmodule ShipWeb.GameLive do
     # We don't want these calls to be made on both the initial static page render and again after
     # the LiveView is connected, so we wrap them in `connected?/1` to prevent duplication
     if connected?(socket) do
-      ECSx.ClientEvents.add(player.id, :spawn_ship)
+      ECSx.ClientEvents.add(player.id, {:spawn_ship, player})
       send(self(), :first_load)
     end
 
@@ -136,7 +137,7 @@ defmodule ShipWeb.GameLive do
   defp assign_other_ships(socket) do
     other_ships =
       all_ships()
-      |> Enum.reject(fn {entity, _, _, _, _, _} -> entity == socket.assigns.player_entity end)
+      |> Enum.reject(fn {entity, _, _, _, _, _, _} -> entity == socket.assigns.player_entity end)
 
     assign(socket, other_ships: other_ships)
   end
@@ -179,7 +180,8 @@ defmodule ShipWeb.GameLive do
       w = RenderWidth.get(ship)
       h = RenderHeight.get(ship)
       image = ImageFile.get(ship)
-      {ship, x, y, w, h, image}
+      name = PlayerName.get(ship, "")
+      {ship, x, y, w, h, image, name}
     end
   end
 

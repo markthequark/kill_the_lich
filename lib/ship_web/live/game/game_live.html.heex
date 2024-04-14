@@ -18,6 +18,7 @@
           </text>
         <% else %>
           <%!-- Player Ship --%>
+          <text x={@x_coord - 3} y={@y_coord} style="font: 1px serif"> <%= @player_name %> </text>
           <image
             x={@x_coord}
             y={@y_coord}
@@ -27,7 +28,8 @@
           />
 
           <%!-- Enemy Ships --%>
-          <%= for {entity, x, y, width, height, image_file} <- @other_ships do %>
+          <%= for {_entity, x, y, width, height, image_file, name} <- @other_ships do %>
+            <text x={x - 3} y={y} style="font: 1px serif"> <%= name %> </text>
             <image x={x} y={y} width={width} height={height} href={~p"/images/#{image_file}"} />
           <% end %>
 

@@ -22,10 +22,13 @@ defmodule Ship.Manager do
       case Enum.random(1..4) do
         1 ->
           Ship.Components.ImageFile.add(entity, "skeleton.png")
+
         2 ->
           Ship.Components.ImageFile.add(entity, "skeleton_archer.png")
+
         3 ->
           Ship.Components.ImageFile.add(entity, "zombie.png")
+
         4 ->
           Ship.Components.ImageFile.add(entity, "wraith.png")
       end
@@ -68,6 +71,7 @@ defmodule Ship.Manager do
   # Declare all valid Component types
   def components do
     [
+      Ship.Components.PlayerName,
       Ship.Components.IsLich,
       Ship.Components.IsPlayer,
       Ship.Components.PlayerWeapon,

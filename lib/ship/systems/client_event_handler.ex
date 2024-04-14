@@ -16,7 +16,7 @@ defmodule Ship.Systems.ClientEventHandler do
   alias Ship.Components.YVelocity
   alias Ship.Components.PlayerSpawned
   alias Ship.Components.ImageFile
-  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon}
+  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon, PlayerName}
 
   @impl ECSx.System
   def run do
@@ -25,26 +25,27 @@ defmodule Ship.Systems.ClientEventHandler do
     Enum.each(client_events, &process_one/1)
   end
 
-  defp process_one({player, :spawn_ship}) do
+  defp process_one({entity, {:spawn_ship, player_struct}}) do
     # currently needed for loading after death
-    Ship.Manager.purge_entity(player)
+    Ship.Manager.purge_entity(entity)
 
     # player ships have better stats than the enemy ships
-    ArmorRating.add(player, 2)
-    AttackDamage.add(player, 6)
-    AttackRange.add(player, 15)
-    AttackSpeed.add(player, 1.2)
-    HealthPoints.add(player, 40)
-    SeekingTarget.add(player)
-    XPosition.add(player, Enum.random(1..100))
-    YPosition.add(player, Enum.random(1..100))
-    XVelocity.add(player, 0)
-    YVelocity.add(player, 0)
-    RenderWidth.add(player, 1)
-    RenderHeight.add(player, 2)
-    ImageFile.add(player, "my_spaceship.svg")
-    PlayerWeapon.add(player, "bow")
-    PlayerSpawned.add(player)
+    ArmorRating.add(entity, 2)
+    AttackDamage.add(entity, 6)
+    AttackRange.add(entity, 15)
+    AttackSpeed.add(entity, 1.2)
+    HealthPoints.add(entity, 40)
+    SeekingTarget.add(entity)
+    XPosition.add(entity, Enum.random(1..100))
+    YPosition.add(entity, Enum.random(1..100))
+    XVelocity.add(entity, 0)
+    YVelocity.add(entity, 0)
+    RenderWidth.add(entity, 1)
+    RenderHeight.add(entity, 2)
+    ImageFile.add(entity, "my_spaceship.svg")
+    PlayerWeapon.add(entity, "bow")
+    PlayerSpawned.add(entity)
+    PlayerName.add(entity, player_struct.email)
   end
 
   defp process_one({player, {:equip_weapon, weapon}}), do: PlayerWeapon.update(player, weapon)

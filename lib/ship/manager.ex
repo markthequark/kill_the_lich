@@ -44,7 +44,19 @@ defmodule Ship.Manager do
   end
 
   defp spawn_lich do
-    entity = Ecto.UUID.generate()
+    lich = Ecto.UUID.generate()
+
+    Ship.Components.ArmorRating.add(lich, 0)
+    Ship.Components.HealthPoints.add(lich, 100)
+
+    Ship.Components.XPosition.add(lich, 90)
+    Ship.Components.YPosition.add(lich, 10)
+    Ship.Components.XVelocity.add(lich, 0)
+    Ship.Components.YVelocity.add(lich, 0)
+    Ship.Components.RenderWidth.add(lich, 8)
+    Ship.Components.RenderHeight.add(lich, 10)
+    Ship.Components.ImageFile.add(lich, "lich.png")
+    Ship.Components.IsLich.add(lich)
   end
 
   # Declare all valid Component types
@@ -87,5 +99,11 @@ defmodule Ship.Manager do
       Ship.Systems.Targeting,
       Ship.Systems.Driver
     ]
+  end
+
+  def purge_entity(entity) do
+    for component <- components() do
+      component.remove(entity)
+    end
   end
 end

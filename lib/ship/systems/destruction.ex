@@ -1,6 +1,6 @@
 defmodule Ship.Systems.Destruction do
   @moduledoc """
-  Destroys ships with less than or equal ot 0 health points.
+  Destroys entities with less than or equal ot 0 health points.
   """
   @behaviour ECSx.System
 
@@ -18,45 +18,32 @@ defmodule Ship.Systems.Destruction do
   alias Ship.Components.YPosition
   alias Ship.Components.YVelocity
   alias Ship.Components.ProjectileTarget
-  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon, PlayerSpawned}
+  alias Ship.Components.ProjectileDamage
+  alias Ship.Components.{RenderWidth, RenderHeight, PlayerWeapon, PlayerSpawned, ImageFile}
+  alias Ship.Components.{IsLich, IsPlayer, IsProjectile}
 
   @impl ECSx.System
   def run do
-    ships = HealthPoints.get_all()
+    entities = HealthPoints.get_all()
 
-    Enum.each(ships, fn {entity, hp} ->
+    Enum.each(entities, fn {entity, hp} ->
       if hp <= 0, do: destroy(entity)
     end)
   end
 
-  defp destroy(ship) do
-    ArmorRating.remove(ship)
-    AttackCooldown.remove(ship)
-    AttackDamage.remove(ship)
-    AttackRange.remove(ship)
-    AttackSpeed.remove(ship)
-    AttackTarget.remove(ship)
-    HealthPoints.remove(ship)
-    SeekingTarget.remove(ship)
-    XPosition.remove(ship)
-    XVelocity.remove(ship)
-    YPosition.remove(ship)
-    YVelocity.remove(ship)
-    RenderWidth.remove(ship)
-    RenderHeight.remove(ship)
-    PlayerWeapon.remove(ship)
-    PlayerSpawned.remove(ship)
+  defp destroy(entity) do
+    Ship.Manager.purge_entity(entity)
 
     # when a ship is destroyed, other ships should stop targeting it
-    untarget(ship)
+    untarget(entity)
 
-    DestroyedAt.add(ship, DateTime.utc_now())
+    DestroyedAt.add(entity, DateTime.utc_now())
   end
 
   defp untarget(target) do
-    for ship <- AttackTarget.search(target) do
-      AttackTarget.remove(ship)
-      SeekingTarget.add(ship)
+    for entity <- AttackTarget.search(target) do
+      AttackTarget.remove(entity)
+      SeekingTarget.add(entity)
     end
 
     for projectile <- ProjectileTarget.search(target) do

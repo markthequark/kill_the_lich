@@ -26,6 +26,9 @@ defmodule Ship.Systems.ClientEventHandler do
   end
 
   defp process_one({player, :spawn_ship}) do
+    # currently needed for loading after death
+    Ship.Manager.purge_entity(player)
+
     # player ships have better stats than the enemy ships
     ArmorRating.add(player, 2)
     AttackDamage.add(player, 6)

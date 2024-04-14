@@ -1,6 +1,6 @@
 defmodule Ship.Systems.Destruction do
   @moduledoc """
-  Destroys ships with less than or equal ot 0 hull points.
+  Destroys ships with less than or equal ot 0 health points.
   """
   @behaviour ECSx.System
 
@@ -11,7 +11,7 @@ defmodule Ship.Systems.Destruction do
   alias Ship.Components.AttackSpeed
   alias Ship.Components.AttackTarget
   alias Ship.Components.DestroyedAt
-  alias Ship.Components.HullPoints
+  alias Ship.Components.HealthPoints
   alias Ship.Components.SeekingTarget
   alias Ship.Components.XPosition
   alias Ship.Components.XVelocity
@@ -22,7 +22,7 @@ defmodule Ship.Systems.Destruction do
 
   @impl ECSx.System
   def run do
-    ships = HullPoints.get_all()
+    ships = HealthPoints.get_all()
 
     Enum.each(ships, fn {entity, hp} ->
       if hp <= 0, do: destroy(entity)
@@ -36,7 +36,7 @@ defmodule Ship.Systems.Destruction do
     AttackRange.remove(ship)
     AttackSpeed.remove(ship)
     AttackTarget.remove(ship)
-    HullPoints.remove(ship)
+    HealthPoints.remove(ship)
     SeekingTarget.remove(ship)
     XPosition.remove(ship)
     XVelocity.remove(ship)

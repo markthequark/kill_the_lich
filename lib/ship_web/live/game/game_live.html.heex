@@ -1,4 +1,5 @@
-<div id="game" phx-window-keydown="keydown" phx-window-keyup="keyup">
+<div id="game" style="display: flex" phx-window-keydown="keydown" phx-window-keyup="keyup">
+<div id="left_element" style="flex: 0 0 75%">
   <svg
     viewBox={"#{@x_offset} #{@y_offset} #{@screen_width} #{@screen_height}"}
     preserveAspectRatio="xMinYMin slice"
@@ -11,9 +12,6 @@
         Loading...
       </text>
     <% else %>
-      <%!-- HUD --%>
-      <.hud {assigns} />
-
       <%!-- Player Ship --%>
       <image
         x={@x_coord}
@@ -24,8 +22,9 @@
       />
 
       <%!-- Enemy Ships --%>
-      <%= for {_entity, x, y, width, height, image_file} <- @other_ships do %>
+      <%= for {entity, x, y, width, height, image_file} <- @other_ships do %>
         <image
+          phx-click="clicked" phx-value-myval={entity}
           x={x}
           y={y}
           width={width}
@@ -46,4 +45,7 @@
       <% end %>
     <% end %>
   </svg>
+</div>
+
+<.right_sidebar {assigns} />
 </div>

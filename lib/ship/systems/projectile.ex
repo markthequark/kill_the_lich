@@ -7,7 +7,7 @@ defmodule Ship.Systems.Projectile do
   @cannonball_speed 2
 
   alias Ship.Components.ArmorRating
-  alias Ship.Components.HullPoints
+  alias Ship.Components.HealthPoints
   alias Ship.Components.ImageFile
   alias Ship.Components.IsProjectile
   alias Ship.Components.ProjectileDamage
@@ -75,10 +75,10 @@ defmodule Ship.Systems.Projectile do
     reduction_from_armor = ArmorRating.get(target)
     final_damage_amount = damage - reduction_from_armor
 
-    target_current_hp = HullPoints.get(target)
+    target_current_hp = HealthPoints.get(target)
     target_new_hp = target_current_hp - final_damage_amount
 
-    HullPoints.update(target, target_new_hp)
+    HealthPoints.update(target, target_new_hp)
   end
 
   defp destroy_projectile(projectile) do

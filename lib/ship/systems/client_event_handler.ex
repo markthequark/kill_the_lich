@@ -8,7 +8,7 @@ defmodule Ship.Systems.ClientEventHandler do
   alias Ship.Components.AttackDamage
   alias Ship.Components.AttackRange
   alias Ship.Components.AttackSpeed
-  alias Ship.Components.HullPoints
+  alias Ship.Components.HealthPoints
   alias Ship.Components.SeekingTarget
   alias Ship.Components.XPosition
   alias Ship.Components.XVelocity
@@ -31,7 +31,7 @@ defmodule Ship.Systems.ClientEventHandler do
     AttackDamage.add(player, 6)
     AttackRange.add(player, 15)
     AttackSpeed.add(player, 1.2)
-    HullPoints.add(player, 75)
+    HealthPoints.add(player, 75)
     SeekingTarget.add(player)
     XPosition.add(player, Enum.random(1..100))
     YPosition.add(player, Enum.random(1..100))

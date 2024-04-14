@@ -29,7 +29,7 @@ defmodule Ship.Manager do
       Ship.Components.AttackDamage.add(entity, 5)
       Ship.Components.AttackRange.add(entity, 10)
       Ship.Components.AttackSpeed.add(entity, 1.05)
-      Ship.Components.HullPoints.add(entity, 50)
+      Ship.Components.HealthPoints.add(entity, 50)
       Ship.Components.SeekingTarget.add(entity)
       Ship.Components.XPosition.add(entity, Enum.random(1..100))
       Ship.Components.YPosition.add(entity, Enum.random(1..100))
@@ -64,7 +64,7 @@ defmodule Ship.Manager do
       Ship.Components.AttackRange,
       Ship.Components.AttackDamage,
       Ship.Components.ArmorRating,
-      Ship.Components.HullPoints
+      Ship.Components.HealthPoints
     ]
   end
 

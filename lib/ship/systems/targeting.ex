@@ -11,7 +11,7 @@ defmodule Ship.Systems.Targeting do
 
   alias Ship.Components.AttackRange
   alias Ship.Components.AttackTarget
-  alias Ship.Components.HullPoints
+  alias Ship.Components.HealthPoints
   alias Ship.Components.SeekingTarget
   alias Ship.SystemUtils
 
@@ -30,8 +30,8 @@ defmodule Ship.Systems.Targeting do
   end
 
   defp look_for_target(self) do
-    # For now, we're assuming anything which has HullPoints can be attacked
-    HullPoints.get_all()
+    # For now, we're assuming anything which has HealthPoints can be attacked
+    HealthPoints.get_all()
     # ... except your own ship!
     |> Enum.reject(fn {possible_target, _hp} -> possible_target == self end)
     |> Enum.find(fn {possible_target, _hp} ->

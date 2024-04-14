@@ -48,6 +48,26 @@ defmodule Ship.Systems.ClientEventHandler do
     PlayerName.add(entity, player_struct.email)
   end
 
+  defp process_one({_player, {:debug, :F2}}) do
+    for minion <- Ship.Components.IsMinion.get_all() do
+      Ship.Manager.purge_entity(minion)
+    end
+
+    for lich <- Ship.Components.IsLich.get_all() do
+      Ship.Manager.purge_entity(lich)
+    end
+
+    for _ <- 1..40 do
+      Ship.Manager.spawn_minion()
+    end
+    Ship.Manager.spawn_lich()
+  end
+
+  defp process_one({player, {:heal}}) do
+    current_hp = HealthPoints.get(player)
+    HealthPoints.update(player, current_hp + 10)
+  end
+
   defp process_one({player, {:equip_weapon, weapon}}), do: PlayerWeapon.update(player, weapon)
 
   # Note Y movement will use screen position (increasing Y goes south)

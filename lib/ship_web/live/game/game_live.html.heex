@@ -7,35 +7,47 @@
       <%!-- Background --%>
       <.sandy_bg {assigns} />
 
-      <%= if @dead do %>
+      <%= if @lich_dead do %>
         <text x={@x_coord} y={@y_coord} style="font: 1px serif">
-          Oh dear, you are dead!
+          The Lich is dead, you have saved the world!
+        </text>
+    <text x={@x_coord} y={@y_coord+1} style="font: 1px serif">
+          Press F2 to restart.
         </text>
       <% else %>
-        <%= if @loading do %>
-          <text x={div(@screen_width, 2)} y={div(@screen_height, 2)} style="font: 1px serif">
-            Loading...
+        <%= if @dead do %>
+          <text x={@x_coord} y={@y_coord} style="font: 1px serif">
+            Oh dear, you are dead!
+          </text>
+          <text x={@x_coord} y={@y_coord+1} style="font: 1px serif">
+            Refresh the page to try again.
           </text>
         <% else %>
-          <%!-- Player Ship --%>
-          <text x={@x_coord - 3} y={@y_coord} style="font: 1px serif"> <%= @player_name %> </text>
-          <image
-            x={@x_coord}
-            y={@y_coord}
-            width={@width}
-            height={@height}
-            href={~p"/images/#{@player_ship_image_file}"}
-          />
+          <%= if @loading do %>
+            <text x={div(@screen_width, 2)} y={div(@screen_height, 2)} style="font: 1px serif">
+              Loading...
+            </text>
+          <% else %>
+            <%!-- Player Ship --%>
+            <text x={@x_coord - 3} y={@y_coord} style="font: 1px serif"> <%= @player_name %> </text>
+            <image
+              x={@x_coord}
+              y={@y_coord}
+              width={@width}
+              height={@height}
+              href={~p"/images/#{@player_ship_image_file}"}
+            />
 
-          <%!-- Enemy Ships --%>
-          <%= for {_entity, x, y, width, height, image_file, name} <- @other_ships do %>
-            <text x={x - 3} y={y} style="font: 1px serif"> <%= name %> </text>
-            <image x={x} y={y} width={width} height={height} href={~p"/images/#{image_file}"} />
-          <% end %>
+            <%!-- Enemy Ships --%>
+            <%= for {_entity, x, y, width, height, image_file, name} <- @other_ships do %>
+              <text x={x - 3} y={y} style="font: 1px serif"> <%= name %> </text>
+              <image x={x} y={y} width={width} height={height} href={~p"/images/#{image_file}"} />
+            <% end %>
 
-          <%!-- Projectiles --%>
-          <%= for {_entity, x, y, image_file} <- @projectiles do %>
-            <image x={x} y={y} width="1" height="1" href={~p"/images/#{image_file}"} />
+            <%!-- Projectiles --%>
+            <%= for {_entity, x, y, image_file} <- @projectiles do %>
+              <image x={x} y={y} width="1" height="1" href={~p"/images/#{image_file}"} />
+            <% end %>
           <% end %>
         <% end %>
       <% end %>

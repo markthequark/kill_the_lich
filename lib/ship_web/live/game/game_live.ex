@@ -48,7 +48,9 @@ defmodule ShipWeb.GameLive do
       width: 0,
       height: 0,
       loading: true,
-      dead: false
+      dead: false,
+      lich_dead: false,
+      lich_hp: 0
     )
   end
 
@@ -102,6 +104,11 @@ defmodule ShipWeb.GameLive do
     {:noreply, assign(socket, keys: MapSet.delete(socket.assigns.keys, key))}
   end
 
+  def handle_event("clicked", %{"myval" => "health"}, socket) do
+    ECSx.ClientEvents.add(socket.assigns.player_entity, {:heal})
+    {:noreply, socket}
+  end
+
   def handle_event("clicked", %{"myval" => weapon}, socket) when weapon in ~w(hammer magic bow) do
     ECSx.ClientEvents.add(socket.assigns.player_entity, {:equip_weapon, weapon})
     {:noreply, socket}
@@ -139,7 +146,15 @@ defmodule ShipWeb.GameLive do
       all_ships()
       |> Enum.reject(fn {entity, _, _, _, _, _, _} -> entity == socket.assigns.player_entity end)
 
-    assign(socket, other_ships: other_ships)
+    lich_dead = Ship.Components.IsLich.get_all() == []
+    lich_hp = if not lich_dead do
+      [lich] = Ship.Components.IsLich.get_all()
+      HealthPoints.get(lich)
+    else
+      0
+    end
+
+    assign(socket, other_ships: other_ships, lich_dead: lich_dead, lich_hp: lich_hp)
   end
 
   defp assign_offsets(socket) do
@@ -207,6 +222,7 @@ defmodule ShipWeb.GameLive do
   defp keydown(key) when key in ~w(d D ArrowRight), do: {:move, :east}
   defp keydown(_key), do: :noop
 
+  defp keyup(key) when key in ~w(F2), do: {:debug, :F2}
   defp keyup(key) when key in ~w(w W ArrowUp), do: {:stop_move, :north}
   defp keyup(key) when key in ~w(a A ArrowLeft), do: {:stop_move, :west}
   defp keyup(key) when key in ~w(s S ArrowDown), do: {:stop_move, :south}

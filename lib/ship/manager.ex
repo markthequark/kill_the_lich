@@ -15,43 +15,41 @@ defmodule Ship.Manager do
     # Load ephemeral components during first server start and again
     # on every subsequent app restart
     for _minions <- 1..40 do
-      # First generate a unique ID to represent the new entity
-      entity = Ecto.UUID.generate()
-
-      # Then use that ID to create the components which make up a ship
-      case Enum.random(1..4) do
-        1 ->
-          Ship.Components.ImageFile.add(entity, "skeleton.png")
-
-        2 ->
-          Ship.Components.ImageFile.add(entity, "skeleton_archer.png")
-
-        3 ->
-          Ship.Components.ImageFile.add(entity, "zombie.png")
-
-        4 ->
-          Ship.Components.ImageFile.add(entity, "wraith.png")
-      end
-
-      Ship.Components.ArmorRating.add(entity, 0)
-      Ship.Components.AttackDamage.add(entity, 5)
-      Ship.Components.AttackRange.add(entity, 10)
-      Ship.Components.AttackSpeed.add(entity, 1.05)
-      Ship.Components.HealthPoints.add(entity, 50)
-      Ship.Components.SeekingTarget.add(entity)
-      Ship.Components.XPosition.add(entity, Enum.random(1..100))
-      Ship.Components.YPosition.add(entity, Enum.random(1..100))
-      Ship.Components.XVelocity.add(entity, 0)
-      Ship.Components.YVelocity.add(entity, 0)
-      Ship.Components.RenderWidth.add(entity, 4)
-      Ship.Components.RenderHeight.add(entity, 5)
+      spawn_minion()
     end
 
     spawn_lich()
     :ok
   end
 
-  defp spawn_lich do
+  def spawn_minion do
+    # First generate a unique ID to represent the new entity
+    entity = Ecto.UUID.generate()
+
+    # Then use that ID to create the components which make up a ship
+    case Enum.random(1..4) do
+      1 -> Ship.Components.ImageFile.add(entity, "skeleton.png")
+      2 -> Ship.Components.ImageFile.add(entity, "skeleton_archer.png")
+      3 -> Ship.Components.ImageFile.add(entity, "zombie.png")
+      4 -> Ship.Components.ImageFile.add(entity, "wraith.png")
+    end
+
+    Ship.Components.ArmorRating.add(entity, 0)
+    Ship.Components.AttackDamage.add(entity, 5)
+    Ship.Components.AttackRange.add(entity, 10)
+    Ship.Components.AttackSpeed.add(entity, 1.05)
+    Ship.Components.HealthPoints.add(entity, 50)
+    Ship.Components.SeekingTarget.add(entity)
+    Ship.Components.XPosition.add(entity, Enum.random(1..100))
+    Ship.Components.YPosition.add(entity, Enum.random(1..100))
+    Ship.Components.XVelocity.add(entity, 0)
+    Ship.Components.YVelocity.add(entity, 0)
+    Ship.Components.RenderWidth.add(entity, 4)
+    Ship.Components.RenderHeight.add(entity, 5)
+    Ship.Components.IsMinion.add(entity)
+  end
+
+  def spawn_lich do
     lich = Ecto.UUID.generate()
 
     Ship.Components.ArmorRating.add(lich, 5)
@@ -71,6 +69,7 @@ defmodule Ship.Manager do
   # Declare all valid Component types
   def components do
     [
+      Ship.Components.IsMinion,
       Ship.Components.PlayerName,
       Ship.Components.IsLich,
       Ship.Components.IsPlayer,

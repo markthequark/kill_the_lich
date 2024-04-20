@@ -34,4 +34,10 @@ dialyzer:
 clean:
 	mix clean
 
-.PHONY: run setup seed deps test pry_test format static_analysis credo dialyzer clean
+deploy:
+	fly deploy
+
+remote:
+	fly ssh console -C "/app/bin/ship remote"
+
+.PHONY: run setup seed deps test pry_test format static_analysis credo dialyzer clean deploy remote
